@@ -37,5 +37,5 @@ fi
 
 nova service-list | $ZONE_CMD | awk -v RET_OK=0 -v RET_WARNING=1 -v RET_CRITICAL=2 -v RET_UNKNOWN=3 '
     BEGIN{enabled_count=0;retval=RET_CRITICAL}
-    $8=="enabled"{enabled_count++; $10=="up" ? retval=RET_OK : print $6, $4, "...", $2, "\"" $10 "\"" }
+    $8=="enabled"{enabled_count++; if ($10=="up") {retval=RET_OK} else {print $6, $4, "...", $2, "\"" $10 "\"" }}
     END{if (enabled_count<=0) {retval=RET_WARNING}; exit retval}'
